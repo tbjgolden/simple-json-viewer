@@ -41,3 +41,8 @@ Have a nice day.
 
 ### Screenshots
 
+![](https://i.imgur.com/MaiIrtD.png)
+
+![](https://i.imgur.com/qvXFpMs.png)
+
+![](https://i.imgur.com/NyG1DbX.png)
