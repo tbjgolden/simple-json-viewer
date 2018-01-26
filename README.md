@@ -1,3 +1,5 @@
+![](https://img.shields.io/npm/v/simple-json-viewer.svg)
+
 # simple-json-viewer
 
 #### The simple, lightweight JSON viewer for the browser that 2018 deserves.
