@@ -2,7 +2,7 @@
 <html>
   <body>
     <div id="container"></div>
-    <script src="./index.js"></script>
+    <script src="./dist/simple-json-viewer.min.js"></script>
     <script>
       function getAjax (url, success) {
         var xhr = new XMLHttpRequest();
@@ -14,7 +14,7 @@
         return xhr;
       }
 
-      getAjax('./test.json', function (json) {
+      getAjax('./test-data.json', function (json) {
         createJSONViewer(document.querySelector('#container'), json);
       });
     </script>
