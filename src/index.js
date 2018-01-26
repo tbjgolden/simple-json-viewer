@@ -62,7 +62,7 @@
       '.json-viewer-array-contents,' +
       '.json-viewer-object-contents {' +
         'display: block;' +
-        'padding-left: 3ex;' +
+        'padding-left: 5ex;' +
       '}' +
       '.json-viewer-toggle {' +
         'border: 0;' +
