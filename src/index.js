@@ -1,19 +1,15 @@
 /* global window, document, HTMLElement */
 
 (() => {
-  const defaultOptions = {
-    showSearch: true
-  };
+  const colors = ['#999', '#090', '#c00', '#c0c', '#00c', '#ccc', '#333', '#ff0', '#eee'];
 
   document.addEventListener('DOMContentLoaded', () => {
     const style = document.createElement('STYLE');
-    const colors = ['#999', '#090', '#c00', '#c0c', '#00c'];
     style.innerHTML = (
       '@import url("https://fonts.googleapis.com/css?family=Fira+Mono");' +
       '.json-viewer-container {' +
         'display: flex;' +
         'flex-direction: column;' +
-        'background-color: white;' +
       '}' +
       '.json-viewer-container * {' +
         'white-space: pre;' +
@@ -25,18 +21,16 @@
       '}' +
       '.json-viewer-search {' +
         'display: block;' +
-        'border: 1px solid #ccc;' +
+        'border: 1px solid ' + colors[5] + ';' +
         'border-bottom-width: 0;' +
         'padding: 2.5ex;' +
-        'background-color: white;' +
       '}' +
       '.json-viewer {' +
         'display: block;' +
-        'border: 1px solid #ccc;' +
+        'border: 1px solid ' + colors[5] + ';' +
         'padding: 2.5ex;' +
         'user-select: none;' +
         'overflow: auto;' +
-        'background-color: white;' +
       '}' +
       '.json-viewer-object:before {' +
         'content: "{";' +
@@ -78,18 +72,18 @@
         'background: none;' +
       '}' +
       '.json-viewer-toggle:focus {' +
-        'background-color: #eee;' +
+        'background-color: ' + colors[8] + ';' +
       '}' +
       '.json-viewer-object .json-viewer-toggle:before,' +
       '.json-viewer-array .json-viewer-toggle:before {' +
         'content: "><";' +
         'font-size: 1.8ex;' +
-        'color: #ccc;' +
+        'color: ' + colors[5] + ';' +
       '}' +
       '.json-viewer-object .json-viewer-toggle:hover:before,' +
       '.json-viewer-array .json-viewer-toggle:hover:before {' +
         'cursor: pointer;' +
-        'color: #333;' +
+        'color: ' + colors[6] + ';' +
       '}' +
       '.json-viewer-object.json-viewer-closed .json-viewer-toggle:before,' +
       '.json-viewer-array.json-viewer-closed .json-viewer-toggle:before {' +
@@ -100,7 +94,7 @@
         'display: none;' +
       '}' +
       '.json-viewer-match {' +
-        'background-color: #ff0;' +
+        'background-color: ' + colors[7] + ';' +
       '}' +
       '.json-viewer-array-contents {' +
         'counter-reset: index -1;' +
@@ -117,10 +111,10 @@
         'top: .1ex;' +
         'left: 0;' +
         'transform: translate3d(calc(-100% - .5ex), 0, 0);' +
-        'color: #ccc;' +
+        'color: ' + colors[5] + ';' +
       '}' +
       '.json-viewer .json-viewer-array-value:hover:before {' +
-        'color: #c0c;' +
+        'color: ' + colors[3] + ';' +
       '}' +
       '.json-viewer :before, .json-viewer :after {' +
         'color: ' + colors[0] + ';' +
@@ -143,22 +137,20 @@
     document.head.appendChild(style);
   });
 
-  window.createJSONViewer = (el, json = '{}', opts = {}) => {
+  window.createJSONViewer = (el, json = '{}') => {
     if (!isElement(el)) {
       throw Error('createJSONViewer must be called with a HTML element');
     } else if (!['string', 'object'].includes(typeof json)) {
       throw Error('json parameter passed to createJSONViewer is not a string or object');
-    } else if (typeof opts !== 'object') {
-      throw Error('options parameter passed to createJSONViewer is not an object');
     }
 
     if (typeof json !== 'string') json = JSON.stringify(json);
 
-    return new JSONViewer(el, json, { ...defaultOptions, ...opts });
+    return new JSONViewer(el, json);
   };
 
   class JSONViewer {
-    constructor (el, json, opts) {
+    constructor (el, json) {
       const jsonViewer = document.createElement('DIV');
       jsonViewer.classList.add('json-viewer');
 
@@ -174,7 +166,6 @@
       this.searchEl = search;
       this.searchValue = '';
       this.json = json;
-      this.opts = opts;
 
       this.container.appendChild(search);
       this.container.appendChild(jsonViewer);
@@ -228,7 +219,7 @@
       } catch (e) {
         regex = null;
       }
-      this.searchEl.style.color = regex ? '#00f' : '#000';
+      this.searchEl.style.color = regex ? colors[4] : colors[6];
 
       this.debounce = setTimeout(() => {
         this.allNodes.forEach(n => {
