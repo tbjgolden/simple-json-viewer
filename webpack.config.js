@@ -1,10 +1,11 @@
-var path = require('path');
+const path = require('path');
+const MinifyPlugin = require('babel-minify-webpack-plugin');
 
 module.exports = {
-  entry: './src/es6.js',
+  entry: './src/index.js',
   output: {
-    path: path.resolve(__dirname, 'build'),
-    filename: 'app.bundle.js'
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'simple-json-viewer.min.js'
   },
   module: {
     loaders: [
@@ -12,13 +13,15 @@ module.exports = {
         test: /\.js$/,
         loader: 'babel-loader',
         query: {
-          presets: ['env']
+          presets: ['stage-2']
         }
       }
     ]
   },
+  plugins: [
+    new MinifyPlugin()
+  ],
   stats: {
     colors: true
-  },
-  devtool: 'source-map'
+  }
 };
