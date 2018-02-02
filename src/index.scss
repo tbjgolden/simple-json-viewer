@@ -1,0 +1,116 @@
+.json-viewer-container {
+  display: flex;
+  flex-direction: column;
+  * {
+    white-space: pre;
+    font-family: monospace;
+    font-size: 14px;
+    line-height: 16px;
+    letter-spacing: 0;
+    box-sizing: border-box;
+  }
+}
+
+.json-viewer-search {
+  display: block;
+  border: 1px solid;
+  border-bottom-width: 0;
+  padding: 2.5ex;
+  z-index: 2;
+}
+
+.json-viewer {
+  display: block;
+  border: 1px solid;
+  padding: 2.5ex;
+  user-select: none;
+  overflow: auto;
+  z-index: 1;
+}
+
+.json-viewer-object {
+  &:before {
+    content: "{";
+  }
+  &:after {
+    content: "}";
+  }
+}
+
+.json-viewer-array {
+  &:before {
+    content: "[";
+  }
+  &:after {
+    content: "]";
+  }
+}
+
+.json-viewer-string {
+  &:before, &:after {
+    content: '"';
+  }
+}
+
+.json-viewer-object-value:before {
+  content: ": ";
+}
+
+.json-viewer-array-value:not(:last-child):after, .json-viewer-key-value-pair:not(:last-child):after {
+  content: ",\\A";
+}
+
+.json-viewer-array-contents, .json-viewer-object-contents {
+  display: block;
+  padding-left: 5ex;
+}
+
+.json-viewer-toggle {
+  border: 0;
+  padding: 0 .4ex;
+  margin: 0;
+  outline: 0;
+  background: none;
+}
+
+.json-viewer-object .json-viewer-toggle:before, .json-viewer-array .json-viewer-toggle:before {
+  content: "><";
+  font-size: 1.8ex;
+}
+
+.json-viewer-object .json-viewer-toggle:hover:before, .json-viewer-array .json-viewer-toggle:hover:before {
+  cursor: pointer;
+}
+
+.json-viewer-object.json-viewer-closed .json-viewer-toggle:before, .json-viewer-array.json-viewer-closed .json-viewer-toggle:before {
+  content: "<>";
+}
+
+.json-viewer-object.json-viewer-closed .json-viewer-object-contents, .json-viewer-array.json-viewer-closed .json-viewer-array-contents {
+  display: none;
+}
+
+.json-viewer-array-contents {
+  counter-reset: index -1;
+}
+
+.json-viewer-array-value {
+  counter-increment: index;
+  position: relative;
+}
+
+.json-viewer-searching .json-viewer-array-value:before, .json-viewer-array-value:hover:before {
+  content: counter(index);
+  position: absolute;
+  display: inline-block;
+  top: .1ex;
+  left: 0;
+  transform: translate3d(calc(-100% - .5ex), 0, 0);
+}
+
+.json-viewer {
+  :before, :after {
+    font: inherit;
+    line-height: inherit;
+  }
+}

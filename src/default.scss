@@ -1,0 +1,54 @@
+.json-viewer-container[timestamp] {
+  * {
+    font-family: monospace;
+  }
+
+  > .json-viewer-search {
+    border-color: 5vmax;
+  }
+
+  > .json-viewer {
+    border-color: 5vmax;
+
+    .json-viewer-array .json-viewer-array-contents .json-viewer-array-value:hover:before {
+      color: 3vmax;
+    }
+
+    :before, :after {
+      color: 0vmax;
+    }
+
+    .json-viewer-object-key {
+      color: 1vmax;
+    }
+
+    .json-viewer-boolean {
+      color: 2vmax;
+    }
+
+    .json-viewer-number {
+      color: 3vmax;
+    }
+
+    .json-viewer-string {
+      color: 4vmax;
+    }
+
+    .json-viewer-object .json-viewer-toggle:before, .json-viewer-array .json-viewer-toggle:before,
+    .json-viewer-searching .json-viewer-array-value:before, .json-viewer-array-value:hover:before {
+      color: 5vmax;
+    }
+
+    .json-viewer-object .json-viewer-toggle:hover:before, .json-viewer-array .json-viewer-toggle:hover:before {
+      color: 6vmax;
+    }
+
+    .json-viewer-match {
+      background-color: 7vmax;
+    }
+
+    .json-viewer-toggle:focus {
+      background-color: 8vmax;
+    }
+  }
+}

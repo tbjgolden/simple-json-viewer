@@ -1,156 +1,29 @@
 /* global window, document, HTMLElement */
 
 (() => {
-  const colors = ['#999', '#090', '#c00', '#c0c', '#00c', '#ccc', '#333', '#ff0', '#eee'];
+  const defaultOptions = {
+    colors: ['#999', '#090', '#c00', '#c0c', '#00c', '#ccc', '#333', '#ff0', '#eee'],
+    fontFamily: 'monospace'
+  };
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const style = document.createElement('STYLE');
-    style.innerHTML = (
-      '@import url("https://fonts.googleapis.com/css?family=Fira+Mono");' +
-      '.json-viewer-container {' +
-        'display: flex;' +
-        'flex-direction: column;' +
-      '}' +
-      '.json-viewer-container * {' +
-        'white-space: pre;' +
-        'font-family: "Fira Mono", monospace;' +
-        'font-size: 14px;' +
-        'line-height: 16px;' +
-        'letter-spacing: 0;' +
-        'box-sizing: border-box;' +
-      '}' +
-      '.json-viewer-search {' +
-        'display: block;' +
-        'border: 1px solid ' + colors[5] + ';' +
-        'border-bottom-width: 0;' +
-        'padding: 2.5ex;' +
-      '}' +
-      '.json-viewer {' +
-        'display: block;' +
-        'border: 1px solid ' + colors[5] + ';' +
-        'padding: 2.5ex;' +
-        'user-select: none;' +
-        'overflow: auto;' +
-      '}' +
-      '.json-viewer-object:before {' +
-        'content: "{";' +
-      '}' +
-      '.json-viewer-object:after {' +
-        'content: "}";' +
-      '}' +
-      '.json-viewer-array:before {' +
-        'content: "[";' +
-      '}' +
-      '.json-viewer-array:after {' +
-        'content: "]";' +
-      '}' +
-      '.json-viewer-string:before {' +
-        'content: \'"\';' +
-      '}' +
-      '.json-viewer-string:after {' +
-        'content: \'"\';' +
-      '}' +
-      '.json-viewer-object-value:before {' +
-        'content: ": ";' +
-      '}' +
-      '.json-viewer-array-value:not(:last-child):after {' +
-        'content: ",\\A";' +
-      '}' +
-      '.json-viewer-key-value-pair:not(:last-child):after {' +
-        'content: ",\\A";' +
-      '}' +
-      '.json-viewer-array-contents,' +
-      '.json-viewer-object-contents {' +
-        'display: block;' +
-        'padding-left: 5ex;' +
-      '}' +
-      '.json-viewer-toggle {' +
-        'border: 0;' +
-        'padding: 0 .4ex;' +
-        'margin: 0;' +
-        'outline: 0;' +
-        'background: none;' +
-      '}' +
-      '.json-viewer-toggle:focus {' +
-        'background-color: ' + colors[8] + ';' +
-      '}' +
-      '.json-viewer-object .json-viewer-toggle:before,' +
-      '.json-viewer-array .json-viewer-toggle:before {' +
-        'content: "><";' +
-        'font-size: 1.8ex;' +
-        'color: ' + colors[5] + ';' +
-      '}' +
-      '.json-viewer-object .json-viewer-toggle:hover:before,' +
-      '.json-viewer-array .json-viewer-toggle:hover:before {' +
-        'cursor: pointer;' +
-        'color: ' + colors[6] + ';' +
-      '}' +
-      '.json-viewer-object.json-viewer-closed .json-viewer-toggle:before,' +
-      '.json-viewer-array.json-viewer-closed .json-viewer-toggle:before {' +
-        'content: "<>";' +
-      '}' +
-      '.json-viewer-object.json-viewer-closed .json-viewer-object-contents,' +
-      '.json-viewer-array.json-viewer-closed .json-viewer-array-contents {' +
-        'display: none;' +
-      '}' +
-      '.json-viewer-match {' +
-        'background-color: ' + colors[7] + ';' +
-      '}' +
-      '.json-viewer-array-contents {' +
-        'counter-reset: index -1;' +
-      '}' +
-      '.json-viewer-array-value {' +
-        'counter-increment: index;' +
-        'position: relative;' +
-      '}' +
-      '.json-viewer-searching .json-viewer-array-value:before,' +
-      '.json-viewer-array-value:hover:before {' +
-        'content: counter(index);' +
-        'position: absolute;' +
-        'display: inline-block;' +
-        'top: .1ex;' +
-        'left: 0;' +
-        'transform: translate3d(calc(-100% - .5ex), 0, 0);' +
-        'color: ' + colors[5] + ';' +
-      '}' +
-      '.json-viewer .json-viewer-array-value:hover:before {' +
-        'color: ' + colors[3] + ';' +
-      '}' +
-      '.json-viewer :before, .json-viewer :after {' +
-        'color: ' + colors[0] + ';' +
-        'font: inherit;' +
-        'line-height: inherit;' +
-      '}' +
-      '.json-viewer-object-key {' +
-        'color: ' + colors[1] + ';' +
-      '}' +
-      '.json-viewer-boolean {' +
-        'color: ' + colors[2] + ';' +
-      '}' +
-      '.json-viewer-number {' +
-        'color: ' + colors[3] + ';' +
-      '}' +
-      '.json-viewer-string {' +
-        'color: ' + colors[4] + ';' +
-      '}'
-    );
-    document.head.appendChild(style);
-  });
+  document.addEventListener('DOMContentLoaded', addBaseStyles);
 
-  window.createJSONViewer = (el, json = '{}') => {
+  window.createJSONViewer = (el, json = {}, opts = {}) => {
     if (!isElement(el)) {
       throw Error('createJSONViewer must be called with a HTML element');
     } else if (!['string', 'object'].includes(typeof json)) {
       throw Error('json parameter passed to createJSONViewer is not a string or object');
+    } else if (typeof opts !== 'object') {
+      throw Error('options parameter passed to createJSONViewer is not an object');
     }
 
     if (typeof json !== 'string') json = JSON.stringify(json);
 
-    return new JSONViewer(el, json);
+    return new JSONViewer(el, json, { ...defaultOptions, ...opts });
   };
 
   class JSONViewer {
-    constructor (el, json) {
+    constructor (el, json, opts) {
       const jsonViewer = document.createElement('DIV');
       jsonViewer.classList.add('json-viewer');
 
@@ -166,13 +39,19 @@
       this.searchEl = search;
       this.searchValue = '';
       this.json = json;
+      this.opts = opts;
 
       this.container.appendChild(search);
       this.container.appendChild(jsonViewer);
+
+      this.uid = `time-${Date.now()}`;
+      el.classList.add(this.uid);
+
       this.generate();
     }
 
     generate () {
+      addCustomStyles(this.uid, this.opts);
       const html = htmlify(JSON.parse(this.json)) || '';
       this.el.innerHTML = html;
       this.el.querySelectorAll('.json-viewer-toggle').forEach(toggle => {
@@ -219,7 +98,7 @@
       } catch (e) {
         regex = null;
       }
-      this.searchEl.style.color = regex ? colors[4] : colors[6];
+      this.searchEl.style.color = regex ? this.opts.colors[4] : this.opts.colors[6];
 
       this.debounce = setTimeout(() => {
         this.allNodes.forEach(n => {
@@ -321,6 +200,23 @@
           '</span>'
         );
     }
+  }
+
+  function addBaseStyles () {
+    const style = document.createElement('STYLE');
+    style.innerHTML = '$$$COMPILED:INDEX.SCSS$$$';
+    document.head.appendChild(style);
+  }
+
+  function addCustomStyles (uid, opts) {
+    const style = document.createElement('STYLE');
+    style.innerHTML = '$$$COMPILED:DEFAULT.SCSS$$$'
+      .replace(/\[timestamp\]/g, `.${uid}`)
+      .replace(/([0-9])vmax/g, (_, colorId) => {
+        return opts.colors[~~colorId];
+      })
+      .replace('monospace', opts.fontFamily);
+    document.head.appendChild(style);
   }
 
   function escapeString (str) {

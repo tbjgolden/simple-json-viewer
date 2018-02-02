@@ -1,5 +1,9 @@
 <!doctype html>
 <html>
+  <head>
+    <title>Example Usage</title>
+    <link href="https://fonts.googleapis.com/css?family=Fira+Mono" rel="stylesheet">
+  </head>
   <body>
     <div id="container"></div>
     <script src="./dist/simple-json-viewer.min.js"></script>
@@ -15,7 +19,13 @@
       }
 
       getAjax('./test-data.json', function (json) {
-        createJSONViewer(document.querySelector('#container'), json);
+        createJSONViewer(
+          document.querySelector('#container'),
+          json,
+          {
+            fontFamily: '"Fira Mono", monospace',
+            colors: ['#000', '#000', '#000', '#000', '#000', '#000', '#000', '#ccc', '#000']
+          });
       });
     </script>
   </body>
