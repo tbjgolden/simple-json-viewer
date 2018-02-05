@@ -1,6 +1,6 @@
 {
   "name": "simple-json-viewer",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Simple and lightweight viewer component, made for the browser",
   "scripts": {
     "start": "http-server .",
