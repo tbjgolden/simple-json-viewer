@@ -2,7 +2,7 @@
 
 # simple-json-viewer
 
-#### The simple, lightweight JSON viewer for the browser that 2018 deserves.
+#### The simple, lightweight JSON viewer for the browser.
 
 ### Features:
 
